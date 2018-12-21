@@ -1,27 +1,40 @@
-# Cellaserv3Dashboard
+# Cellaserv dashboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.3.
+Welcome to the cellaserv interactive dashboard! It's the advanced web interface
+of cellaserv. Whereas the integrated `:4280` http interface is static and
+basic, the cellaserv dashboard is using [Angular](https://angular.io) to be
+dynamic and interactive.
+
+## Using
+
+* Install npm with your package manager
+* Clone this repository:
+
+```
+git clone git@bitbucket.org:evolutek/cellaserv3-dashboard.git
+cd cellaserv3-dashboard
+```
+
+* Install the dependencies using npm: `npm install`. You will most likely need
+  to add the `node_modules/.bin/` directory to your `PATH`.
+* If the cellaserv3 broker is not listening on `localhost:4200`, change the
+  path in `src/app/cellaserv.service.ts`.
+* Start the development server: `ng serve --port 4242`. We specify the port
+  because the default one is the same as cellaserv.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app
+will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Updating
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To update the dependencies:
 
-## Build
+```
+npm update
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Testing
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+TODO: unit testing
