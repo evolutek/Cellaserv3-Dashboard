@@ -28,43 +28,22 @@ export class CellaservService {
   events: Subscribers[] = [];
 
   constructor(private http: HttpClient) {
-    // Bootstrap
-    this.request<Client[]>('cellaserv', 'list_clients')
-    .subscribe(clients => this.clients = clients);
-    this.request<Service[]>('cellaserv', 'list_services')
-    .subscribe(services => this.services = services);
-    this.request<Subscribers[]>('cellaserv', 'list_events')
-    .subscribe(events => this.events = events);
-
-    // Live updates
+    // Live updates, setup first to avoid race condition with data bootstrap
     this.liveUpdate<Client>("client")
     this.liveUpdate<Service>("service")
     // Live updates: events
     this.subscribe<NewSubscriber>(`log.cellaserv.new-subscriber`)
-      .subscribe(newElt => {
-	for (let sub of this.events) {
-	  if (sub.event == newElt.event) {
-	    sub.subscribers.push(newElt.client);
-	    return;
-	  }
-	}
-	// Did not return early, this is a new event
-	let newSub: Subscribers = {
-	  event: newElt.event,
-	  subscribers: [newElt.client],
-	};
-	this.events.push(newSub);
-      });
+      .subscribe(this.onNewSubscriber);
     this.subscribe<NewSubscriber>(`log.cellaserv.lost-subscriber`)
-      .subscribe(removedElt => {
-	for (let event of this.events) {
-	  if (event.event == removedElt.event) {
-	    let index = event.subscribers.indexOf(removedElt.client);
-	    event.subscribers.splice(index, 1);
-	    break;
-	  }
-	}
-      });
+      .subscribe(this.onLostSubscriber);
+
+    // Bootstrap
+    this.request<Client[]>('cellaserv', 'list_clients')
+      .subscribe(clients => this.clients = clients);
+    this.request<Service[]>('cellaserv', 'list_services')
+      .subscribe(services => this.services = services);
+    this.request<Subscribers[]>('cellaserv', 'list_events')
+      .subscribe(events => this.events = events);
   };
 
   liveUpdate<T>(what: string) {
@@ -75,15 +54,40 @@ export class CellaservService {
       .subscribe(removedElt => this[attr]= this[attr].filter(elt => !deepEqual(elt, removedElt)));
   }
 
+  onNewSubscriber = (newSub: NewSubscriber) => {
+    for (let sub of this.events) {
+      if (sub.event == newSub.event) {
+	sub.subscribers.push(newSub.client);
+	return;
+      }
+    }
+    // Did not return early, this is a new event
+    let newSubs: Subscribers = {
+      event: newSub.event,
+      subscribers: [newSub.client],
+    };
+    this.events.push(newSubs);
+  }
+
+  onLostSubscriber = (removedSub: NewSubscriber) => {
+    for (let event of this.events) {
+      if (event.event == removedSub.event) {
+	let index = event.subscribers.indexOf(removedSub.client);
+	event.subscribers.splice(index, 1);
+	break;
+      }
+    }
+  }
+
   // TODO(halfr): add overload for making request with data
   request<T>(service: string, method: string): Observable<T>{
     // TODO(halfr): add error handling
     const url = `http://${CELLASERV_URL}/api/v1/request/${service}/${method}`;
-      return this.http.get<T>(url);
+    return this.http.get<T>(url);
   }
 
   subscribe<T>(event: string): WebSocketSubject<T>{
     const url = `ws://${CELLASERV_URL}/api/v1/subscribe/${event}`;
-      return webSocket<T>(url);
+    return webSocket<T>(url);
   }
 }
