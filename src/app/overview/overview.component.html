@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around">
+
+  <mat-card fxFlex="25">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon class="card-avatar">phone</mat-icon></div>
+      <mat-card-title>Clients</mat-card-title>
+      <mat-card-subtitle>Currently connected to cellaserv</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list>
+	<mat-list-item *ngFor="let client of cs.clients">
+	  <mat-icon mat-list-icon>chevron_right</mat-icon>
+	  <h4 mat-line>{{client.id}}</h4>
+	  <p mat-line> {{client.name}} </p>
+	</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="25">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon class="card-avatar">apps</mat-icon></div>
+      <mat-card-title>Services</mat-card-title>
+      <mat-card-subtitle>Services currently registered</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list>
+	<mat-list-item *ngFor="let service of cs.services">
+	  <mat-icon mat-list-icon>chevron_right</mat-icon>
+	  <h4 mat-line>{{service.name}}[{{service.identification}}]</h4>
+	  <p mat-line> Client: {{service.client}} </p>
+	</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="25">
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon class="card-avatar">rss_feed</mat-icon></div>
+      <mat-card-title>Events</mat-card-title>
+      <mat-card-subtitle>Events and their subscribers</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list>
+	<mat-list-item *ngFor="let event of cs.events">
+	  <mat-icon mat-list-icon>chevron_right</mat-icon>
+	  <h4 mat-line>{{event.event}}</h4>
+	  <p mat-line *ngFor="let client of event.subscribers">{{client}}</p>
+	</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+</div>
