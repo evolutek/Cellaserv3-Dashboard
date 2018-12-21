@@ -1,30 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { Observable } from 'rxjs';
+
 import { Client } from './client';
 import { Service } from './service';
 import { Subscribers } from './subscribers';
+
+  // TODO(halfr): make cs url configurable
+const CELLASERV_URL = 'http://localhost:4280';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CellaservService {
-  // TODO(halfr): make cs url configurable
-  private csUrl = 'http://localhost:4280';
-
   clients: Client[] = [];
   services: Service[] = [];
   events: Subscribers[] = [];
 
   constructor(private http: HttpClient) {
     // TODO(halfr): add error handling
-    this.http.get<Client[]>(this.csUrl + '/api/v1/request/cellaserv/list_clients')
+    this.request<Client[]>('cellaserv', 'list_clients')
       .subscribe(clients => this.clients = clients);
-    this.http.get<Service[]>(this.csUrl + '/api/v1/request/cellaserv/list_services')
+    this.request<Service[]>('cellaserv', 'list_services')
       .subscribe(services => this.services = services);
-    this.http.get<Subscribers[]>(this.csUrl + '/api/v1/request/cellaserv/list_events')
+    this.request<Subscribers[]>('cellaserv', 'list_events')
       .subscribe(events => this.events = events);
   }
 
-  // TODO(halfr): add request()
+  request<T>(service: string, method: string): Observable<T>{
+    const url = `${CELLASERV_URL}/api/v1/request/${service}/${method}`;
+    return this.http.get<T>(url);
+  }
 }
