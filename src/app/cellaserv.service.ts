@@ -57,15 +57,11 @@ export class CellaservService {
       for (const client of clients) {
 	this.clientsMap.set(client.id, client);
       }
-      console.log('Clients');
-      console.log(clients);
     });
     this.request<Service[]>('cellaserv', 'list_services')
     .subscribe(services => this.services = services);
     this.request<Subscribers[]>('cellaserv', 'list_events')
     .subscribe(events => {
-      console.log('Subscribers');
-      console.log(events);
       // Store subscribers
       events.forEach(event => event.subscribers.forEach(client => {
 	const newSub: NewSubscriber = {event: event.event, client: client};
@@ -99,8 +95,6 @@ export class CellaservService {
   }
 
   onNewSubscriber = (newSub: NewSubscriber) => {
-    console.log('New sub');
-    console.log(newSub);
     for (const sub of this.events) {
       if (sub.event === newSub.event) {
 	sub.subscribers.push(newSub.client);
@@ -111,8 +105,6 @@ export class CellaservService {
       event: newSub.event,
       subscribers: [newSub.client],
     };
-    console.log('New subs');
-    console.log(newSubs);
     this.events.push(newSubs);
   }
 
@@ -154,7 +146,11 @@ export class CellaservService {
   // Request with data
   request<ReqT, RepT>(service: string, method: string, reqData?: ReqT): Observable<RepT> {
     const url = `http://${CELLASERV_ADDR}/api/v1/request/${service}/${method}`;
+      if (reqData === undefined) {
+      return this.http.get<RepT>(url);
+    } else {
       return this.http.post<RepT>(url, reqData);
+    }
   }
 
   subscribePattern<T>(event: string): Observable<Publish<T>> {

@@ -12,7 +12,8 @@ export class OverviewComponent {
   constructor(public cs: CellaservService) { }
 
   serviceHelp(service: Service) {
-    // TODO(halfr)
-    console.log(service); // console
+    this.cs.request<any>(service.name, 'help').subscribe(rep => {
+      console.log(rep);
+    });
   }
 }
