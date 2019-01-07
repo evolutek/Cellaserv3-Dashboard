@@ -11,8 +11,8 @@
       <mat-list>
 	<mat-list-item *ngFor="let client of cs.clients">
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
-	  <h4 mat-line>{{client.id}}</h4>
-	  <p mat-line> {{client.name}} </p>
+	  <h3 mat-line>Id: {{client.id}}</h3>
+	  <p mat-line>Name: {{client.name}}</p>
 	</mat-list-item>
       </mat-list>
     </mat-card-content>
@@ -29,8 +29,11 @@
       <mat-list>
 	<mat-list-item *ngFor="let service of cs.services">
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
-	  <h4 mat-line>{{service.name}}[{{service.identification}}]</h4>
-	  <p mat-line> Client: {{service.client}} </p>
+	  <h3 mat-line>{{service.name}}[{{service.identification}}]</h3>
+	  <p mat-line>Client: {{service.client | clientName}}</p>
+	  <button mat-icon-button>
+	    <mat-icon>help</mat-icon>
+	  </button>
 	</mat-list-item>
       </mat-list>
     </mat-card-content>
@@ -47,8 +50,16 @@
       <mat-list>
 	<mat-list-item *ngFor="let event of cs.events">
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
-	  <h4 mat-line>{{event.event}}</h4>
-	  <p mat-line *ngFor="let client of event.subscribers">{{client}}</p>
+	  <h3 mat-line>{{event.event}}</h3>
+	  <p mat-line *ngFor="let client of event.subscribers">
+	    Client: {{client | clientName}}
+	  </p>
+	  <button mat-icon-button>
+	    <mat-icon>send</mat-icon>
+	  </button>
+	  <button mat-icon-button>
+	    <mat-icon>rss_feed</mat-icon>
+	  </button>
 	</mat-list-item>
       </mat-list>
     </mat-card-content>

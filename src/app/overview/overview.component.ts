@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 import { CellaservService } from '../cellaserv.service';
 
@@ -11,8 +7,6 @@ import { CellaservService } from '../cellaserv.service';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent {
   constructor(public cs: CellaservService) { }
-
-  ngOnInit() { }
 }

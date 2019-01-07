@@ -29,3 +29,4 @@ $cellaserv3-dashboard-theme: mat-light-theme($cellaserv3-dashboard-primary, $cel
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.app-root { height: inherit; }

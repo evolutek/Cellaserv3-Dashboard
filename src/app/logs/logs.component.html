@@ -1,0 +1,58 @@
+<div  fxLayoutAlign="space-around" fxLayout="row" fxLayout.xs="column">
+
+  <div fxFlex="30">
+    <mat-card>
+      <mat-card-content>
+	<h2>Filters</h2>
+
+	<mat-form-field class="form-full-width">
+	  <input matInput type="text" placeholder="Log name" [(ngModel)]="filterLogName">
+	  <button mat-button *ngIf="filterLogName" matSuffix mat-icon-button aria-label="Clear" (click)="filterLogName=''">
+	    <mat-icon>close</mat-icon>
+	  </button>
+	</mat-form-field>
+
+	<mat-form-field class="form-full-width">
+	  <input matInput type="text" placeholder="Log text" [(ngModel)]="filterLogText">
+	  <button mat-button *ngIf="filterLogText" matSuffix mat-icon-button aria-label="Clear" (click)="filterLogText=''">
+	    <mat-icon>close</mat-icon>
+	  </button>
+	</mat-form-field>
+
+	<h2>Events</h2>
+
+	<mat-selection-list #events>
+	  <mat-list-option *ngFor="let event of cs.logNames">
+	    {{event}}
+	  </mat-list-option>
+	</mat-selection-list>
+
+	<p>
+	Select: <a>all</a>/<a>none</a>
+	</p>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxFlex="60">
+    <h2>Logs</h2>
+
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let log of (cs.logs | logsFilter: filterLogName:filterLogText)">
+	<mat-expansion-panel-header>
+	  <mat-panel-title>
+	    {{log.name}}
+	  </mat-panel-title>
+	  <mat-panel-description>
+	    {{log.data}}
+	  </mat-panel-description>
+	</mat-expansion-panel-header>
+
+	<pre>{{log.data | JSONStringify}}</pre>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </div>
+
+</div>
