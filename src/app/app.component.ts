@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'cellaserv3-dashboard';
 
   // List of services that we have a dedicated component for
-  SERVICES = ["config", "ai"];
+  SERVICES = ['config', 'ai'];
 
   constructor(public cs: CellaservService) { }
 }

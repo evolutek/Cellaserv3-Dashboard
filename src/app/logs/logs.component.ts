@@ -9,10 +9,10 @@ import { CellaservService } from '../cellaserv.service';
 })
 export class LogsFilterPipe implements PipeTransform {
   transform(logs: any[], filterLogName: string, filterLogText: string) {
-    if (filterLogName == "" && filterLogText == "") {
+    if (filterLogName == '' && filterLogText == '') {
       return logs;
     }
-    return logs.filter(log => filterLogText == "" || log.data.indexOf(filterLogText) !== -1);
+    return logs.filter(log => filterLogText == '' || log.data.indexOf(filterLogText) !== -1);
   }
 }
 
@@ -22,8 +22,8 @@ export class LogsFilterPipe implements PipeTransform {
   styleUrls: ['./logs.component.scss']
 })
 export class LogsComponent {
-  filterLogName: string = "";
-  filterLogText: string = "";
+  filterLogName = '';
+  filterLogText = '';
 
   constructor(public cs: CellaservService) { }
 }
