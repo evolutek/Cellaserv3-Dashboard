@@ -31,7 +31,7 @@ export class CellaservService {
   // Logs
   logNames: string[] = [];
   logsByName = new Map<string, any[]>();
-  logs: any[] = [];
+  logs: Publish<any>[] = [];
 
   constructor(private http: HttpClient) {
     // First, check that we can query cellaserv, then do the setup
@@ -128,6 +128,7 @@ export class CellaservService {
   addLog(log: Publish<any>) {
     let events = this.logsByName.get(log.name);
     if (events === undefined) {
+      // New log name
       events = [];
       this.logsByName.set(log.name, events);
     }
@@ -198,6 +199,6 @@ export class ClientNamePipe implements PipeTransform {
 })
 export class JSONStringifyPipe implements PipeTransform {
   transform(jsonPipe: string) {
-    return JSON.stringify(JSON.parse(jsonPipe), null, 2);
+    return JSON.stringify(jsonPipe, null, 2);
   }
 }

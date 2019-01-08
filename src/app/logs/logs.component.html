@@ -21,7 +21,7 @@
 
 	<h2>Events</h2>
 
-	<mat-selection-list #events>
+	<mat-selection-list #eventsCheckboxes>
 	  <mat-list-option *ngFor="let event of cs.logNames">
 	    {{event}}
 	  </mat-list-option>
@@ -45,7 +45,7 @@
 	    {{log.name}}
 	  </mat-panel-title>
 	  <mat-panel-description>
-	    {{log.data}}
+	    {{log.data | json}}
 	  </mat-panel-description>
 	</mat-expansion-panel-header>
 
