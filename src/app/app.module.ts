@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -56,6 +57,7 @@ import { ClientNamePipe, JSONStringifyPipe } from './cellaserv.service';
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatSnackBarModule,
     MatSlideToggleModule,
   ],
   providers: [],
