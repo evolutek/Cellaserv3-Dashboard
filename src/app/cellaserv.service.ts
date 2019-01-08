@@ -42,13 +42,12 @@ export class CellaservService {
 
   cellaservSetup = () => {
     // Live updates, subscribe before sending seeding request to avoid race
-    this.liveUpdate<Client>('client');
-    this.liveUpdate<Service>('service');
-    // Live updates: events
     this.subscribe<NewSubscriber>(`log.cellaserv.new-subscriber`)
     .subscribe(this.onNewSubscriber);
     this.subscribe<NewSubscriber>(`log.cellaserv.lost-subscriber`)
     .subscribe(this.onLostSubscriber);
+    this.liveUpdate<Client>('client');
+    this.liveUpdate<Service>('service');
 
     // Bootstrap cellaserv status with list requests
     this.request<Client[]>('cellaserv', 'list_clients')
