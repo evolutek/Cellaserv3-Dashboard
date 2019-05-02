@@ -110,9 +110,9 @@ export class CellaservService {
   onLostSubscriber = (removedSub: NewSubscriber) => {
     for (const event of this.events) {
       if (event.event == removedSub.event) {
-	const index = event.subscribers.indexOf(removedSub.client);
-	event.subscribers.splice(index, 1);
-	break;
+	    const index = event.subscribers.indexOf(removedSub.client);
+	    event.subscribers.splice(index, 1);
+	    break;
       }
     }
   }
