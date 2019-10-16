@@ -1,9 +1,11 @@
 # Cellaserv dashboard
 
 Welcome to the cellaserv interactive dashboard! It's the advanced web interface
-of cellaserv. Whereas the integrated `:4280` http interface is static and
-basic, the cellaserv dashboard is using [Angular](https://angular.io) to be
-dynamic and interactive.
+for cellaserv. Whereas the cellaserv's integrated `:4280` http interface is
+static and basic, the cellaserv dashboard is using
+[Angular](https://angular.io) to be dynamic and interactive.
+
+It's written using Angular and TypeScript.
 
 ## Using
 
@@ -22,17 +24,18 @@ cd cellaserv3-dashboard
 * Start the development server: `ng serve --port 4242`. We specify the port
   because the default one is the same as cellaserv.
 
-## Development server
+## Testing
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app
-will automatically reload if you change any of the source files.
+Simply start the development server (`ng serve --port 4242`) and make change to
+the project's file. Angular's dev server watches them and will reload the page
+automatically when needed.
 
 ## Updating
 
-To update the dependencies:
+To update the Angular and other npm dependencies:
 
 ```
-npm update
+ng update --all
 ```
 
 ## Testing
