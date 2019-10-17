@@ -107,6 +107,7 @@ export class CellaservService {
         for (const sub of this.events) {
           if (sub.event === newSub.event) {
             sub.subscribers.push(newSub.client);
+            return;
           }
         }
         // Did not return early, this is a new event
@@ -157,6 +158,7 @@ export class CellaservService {
   // Request with data
   request<ReqT, RepT>(service: string, method: string,
                       reqData?: ReqT): Observable<RepT> {
+    // TODO(halfr): move API request building to helper
     const url = `http://${CELLASERV_ADDR}/api/v1/request/${service}/${method}`;
     if (reqData === undefined) {
       return this.http.get<RepT>(url);
@@ -194,10 +196,7 @@ export class ClientNamePipe implements PipeTransform {
 
   transform(clientId: string) {
     const client = this.cs.clientsMap.get(clientId);
-    if (client === undefined) {
-      return clientId;
-    }
-    return client.name;
+    return (client === undefined) ? clientId : client.name;
   }
 }
 
