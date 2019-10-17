@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CellaservService } from './cellaserv.service';
+import {CellaservService} from './cellaserv.service';
 
 describe('CellaservService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

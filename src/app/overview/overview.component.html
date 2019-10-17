@@ -20,7 +20,7 @@
 
   <mat-card fxFlex="30">
     <mat-card-header>
-      <div mat-card-avatar><mat-icon class="card-avatar">apps</mat-icon></div>
+      <div mat-card-avatar><mat-icon class="card-avatar">storefront</mat-icon></div>
       <mat-card-title>Services</mat-card-title>
       <mat-card-subtitle>Services currently registered</mat-card-subtitle>
     </mat-card-header>
@@ -32,7 +32,7 @@
 	  <h3 mat-line>{{service.name}}[{{service.identification}}]</h3>
 	  <p mat-line>Client: {{service.client | clientName}}</p>
 	  <button mat-icon-button>
-	    <mat-icon (click)="serviceHelp(service)">help</mat-icon>
+	    <mat-icon (click)="serviceHelp(service)">menu_book</mat-icon>
 	  </button>
 	</mat-list-item>
       </mat-list>
@@ -41,7 +41,7 @@
 
   <mat-card fxFlex="30">
     <mat-card-header>
-      <div mat-card-avatar><mat-icon class="card-avatar">rss_feed</mat-icon></div>
+      <div mat-card-avatar><mat-icon class="card-avatar">notifications</mat-icon></div>
       <mat-card-title>Events</mat-card-title>
       <mat-card-subtitle>Events and their subscribers</mat-card-subtitle>
     </mat-card-header>
@@ -51,8 +51,9 @@
 	<mat-list-item *ngFor="let event of cs.events">
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
 	  <h3 mat-line>{{event.event}}</h3>
+	  <p mat-line>Subscribers: {{ event.subscribers.length }} </p>
 	  <p mat-line *ngFor="let client of event.subscribers">
-	    Client: {{client | clientName}}
+	    {{client | clientName}}
 	  </p>
 	  <button mat-icon-button>
 	    <mat-icon>send</mat-icon>
