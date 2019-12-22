@@ -154,10 +154,11 @@ export class CellaservService {
   }
 
   // Request without data
-  request<RepT>(serice: string, method: string): Observable<RepT>;
+  public request<RepT>(service: string, method: string,
+                       reqData?: any): Observable<RepT>;
   // Request with data
-  request<ReqT, RepT>(service: string, method: string,
-                      reqData?: ReqT): Observable<RepT> {
+  public request<RepT>(service: string, method: string,
+                       reqData: any): Observable<RepT> {
     // TODO(halfr): move API request building to helper
     const url = `http://${CELLASERV_ADDR}/api/v1/request/${service}/${method}`;
     if (reqData === undefined) {

@@ -1,0 +1,21 @@
+<div fxLayoutAlign="space-around" fxLayout="row">
+  <div *ngFor="let section of config_sections">
+    <h2>{{section.name}}</h2>
+
+    <div *ngFor="let entry of section.entries">
+
+      <mat-form-field>
+	<input matInput #config
+	       placeholder="{{entry.name}}"
+	       value="{{entry.value}}"
+	       (keyup.enter)="updateConfig(section, entry, config.value)" />
+	<button mat-icon-button matSuffix
+		(click)="updateConfig(section, entry, config.value)"
+		[disabled]="entry.value == config.value">
+	  <mat-icon>send</mat-icon>
+	</button>
+      </mat-form-field>
+
+    </div>
+  </div>
+</div>
