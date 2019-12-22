@@ -1,3 +1,13 @@
 .form-full-width {
   width: 100%;
 }
+
+.logs-headers-align .mat-expansion-panel-header-title,
+.logs-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.logs-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
