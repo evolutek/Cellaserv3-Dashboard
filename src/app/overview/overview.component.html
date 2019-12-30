@@ -31,9 +31,6 @@
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
 	  <h3 mat-line>{{service.name}}[{{service.identification}}]</h3>
 	  <p mat-line>Client: {{service.client | clientName}}</p>
-	  <button mat-icon-button>
-	    <mat-icon (click)="serviceHelp(service)">menu_book</mat-icon>
-	  </button>
 	</mat-list-item>
       </mat-list>
     </mat-card-content>
@@ -55,12 +52,6 @@
 	  <p mat-line *ngFor="let client of event.subscribers">
 	    {{client | clientName}}
 	  </p>
-	  <button mat-icon-button>
-	    <mat-icon>send</mat-icon>
-	  </button>
-	  <button mat-icon-button>
-	    <mat-icon>rss_feed</mat-icon>
-	  </button>
 	</mat-list-item>
       </mat-list>
     </mat-card-content>
