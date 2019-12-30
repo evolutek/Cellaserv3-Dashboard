@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {CellaservService} from '../cellaserv.service';
+import {CellaservApiService} from '../cellaserv_api';
 
 class ConfigSectionEntry {
   name: string;
@@ -36,7 +36,7 @@ export class ConfigComponent implements OnInit {
   config_sections: ConfigSection[] = [];
   config_update_map: {[pubName: string]: ConfigSectionEntry} = {};
 
-  constructor(public cs: CellaservService) {}
+  constructor(public cs: CellaservApiService) {}
 
   ngOnInit() {
     this.cs.request("config", "list")

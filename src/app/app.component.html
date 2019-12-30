@@ -4,8 +4,8 @@
     <a mat-button routerLink="/logs">LOGS</a>
     <a *ngFor="let srvc of SERVICES"
       mat-button routerLink="/{{srvc}}"
-      [disabled]="!cs.isServicePresent(srvc)"
-      [matTooltipDisabled]="cs.isServicePresent(srvc)"
+      [disabled]="!broker.isServicePresent(srvc)"
+      [matTooltipDisabled]="broker.isServicePresent(srvc)"
       matTooltip="Service {{srvc}} is not registered">{{srvc | uppercase}}</a>
 
     <div style="flex: 1 1 auto;"></div>

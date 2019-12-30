@@ -1,5 +1,4 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Pipe, PipeTransform} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as deepEqual from 'deep-equal';
@@ -8,6 +7,7 @@ import {catchError, filter, map} from 'rxjs/operators';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 
 import {
+  CellaservApiService,
   Client,
   NewSubscriber,
   Publish,
@@ -15,13 +15,8 @@ import {
   Subscribers
 } from './cellaserv_api';
 
-// TODO(halfr): make cs url configurable
-const CELLASERV_ADDR = 'localhost:4280';
-
 @Injectable({providedIn : 'root'})
-export class CellaservService {
-  // Connection
-  cellaservAddr = CELLASERV_ADDR;
+export class CellaservService implements OnInit {
   errorMsg = '';
 
   // Broker status
@@ -37,9 +32,12 @@ export class CellaservService {
   logsByName = new Map<string, any[]>();
   logs: Publish<any>[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private cs: CellaservApiService) {}
+
+  ngOnInit() {
+    console.log("Init");
     // First, check that we can query cellaserv, then do the setup
-    this.request('cellaserv', 'version')
+    this.cs.request('cellaserv', 'version')
         .subscribe(_ => this.cellaservSetup(),
                    error => this.errorMsg = error.message);
   }
@@ -47,24 +45,24 @@ export class CellaservService {
   cellaservSetup =
       () => {
         // Live updates, subscribe before sending seeding request to avoid race
-        this.subscribe<NewSubscriber>(`log.cellaserv.new-subscriber`)
+        this.cs.subscribe<NewSubscriber>(`log.cellaserv.new-subscriber`)
             .subscribe(this.onNewSubscriber);
-        this.subscribe<NewSubscriber>(`log.cellaserv.lost-subscriber`)
+        this.cs.subscribe<NewSubscriber>(`log.cellaserv.lost-subscriber`)
             .subscribe(this.onLostSubscriber);
         this.liveUpdate<Client>('client');
         this.liveUpdate<Service>('service');
 
         // Bootstrap cellaserv status with list requests
-        this.request<Client[]>('cellaserv', 'list_clients')
+        this.cs.request<Client[]>('cellaserv', 'list_clients')
             .subscribe(clients => {
               this.clients = clients;
               for (const client of clients) {
                 this.clientsMap.set(client.id, client);
               }
             });
-        this.request<Service[]>('cellaserv', 'list_services')
+        this.cs.request<Service[]>('cellaserv', 'list_services')
             .subscribe(services => this.services = services);
-        this.request<Subscribers[]>('cellaserv', 'list_events')
+        this.cs.request<Subscribers[]>('cellaserv', 'list_events')
             .subscribe(events => {
               // Store subscribers
               events.forEach(event => event.subscribers.forEach(client => {
@@ -84,7 +82,7 @@ export class CellaservService {
             });
 
         // Logs component
-        this.subscribePattern<any>('log.*').subscribe(logEvent => {
+        this.cs.subscribePattern<any>('log.*').subscribe(logEvent => {
           this.addLogName(logEvent.name);
           this.addLog(logEvent);
         });
@@ -92,12 +90,13 @@ export class CellaservService {
 
   liveUpdate<T>(what: string) {
     const attr = what + 's';
-    this.subscribe<T>(`log.cellaserv.new-${what}`).subscribe(newElt => {
+    console.log(this[attr]);
+    this.cs.subscribe<T>(`log.cellaserv.new-${what}`).subscribe(newElt => {
       if (!this[attr].includes(newElt)) {
         this[attr].push(newElt);
       }
     });
-    this.subscribe<T>(`log.cellaserv.lost-${what}`)
+    this.cs.subscribe<T>(`log.cellaserv.lost-${what}`)
         .subscribe(removedElt => this[attr] =
                        this[attr].filter(elt => !deepEqual(elt, removedElt)));
   }
@@ -151,43 +150,6 @@ export class CellaservService {
   // Template utilities
   public isServicePresent(service: string): boolean {
     return this.services.some(srvc => srvc.name === service);
-  }
-
-  // Request without data
-  public request<RepT>(service: string, method: string,
-                       reqData?: any): Observable<RepT>;
-  // Request with data
-  public request<RepT>(service: string, method: string,
-                       reqData: any): Observable<RepT> {
-    // TODO(halfr): move API request building to helper
-    const url = `http://${CELLASERV_ADDR}/api/v1/request/${service}/${method}`;
-    if (reqData === undefined) {
-      return this.http.get<RepT>(url);
-    } else {
-      return this.http.post<RepT>(url, reqData);
-    }
-  }
-
-  subscribePattern<T>(event: string): Observable<Publish<T>> {
-    const url = `ws://${CELLASERV_ADDR}/api/v1/subscribe/${event}`;
-    return webSocket<Publish<string>>(url)
-        .pipe(catchError(error => {
-          if (error instanceof CloseEvent) {
-            this.errorMsg = 'Connection to cellaserv was closed';
-          } else {
-            this.errorMsg = error;
-          }
-          return throwError(error);
-        }))
-        .pipe(map(publish => {
-          const parsedData: T = JSON.parse(publish.data);
-          const ret: Publish<T> = {name : publish.name, data : parsedData};
-          return ret;
-        }));
-  }
-
-  subscribe<T>(event: string): Observable<T> {
-    return this.subscribePattern<T>(event).pipe(map(publish => publish.data));
   }
 }
 
