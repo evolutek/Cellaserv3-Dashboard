@@ -46,7 +46,6 @@ export class CellaservApiService {
                        reqData: any): Observable<RepT> {
     const url =
         `http://${this.cellaservAddr}/api/v1/request/${service}/${method}`;
-    console.log(url);
     if (reqData === undefined) {
       return this.http.get<RepT>(url);
     } else {

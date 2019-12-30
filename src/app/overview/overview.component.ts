@@ -24,7 +24,7 @@ export class OverviewComponent implements OnInit {
           return throwError(error);
         }))
         .subscribe(rep => {
-          // TODO(halfr): display
+          this.snackBar.open("TODO(halfr). View dev console.");
           console.log(rep);
         });
   }

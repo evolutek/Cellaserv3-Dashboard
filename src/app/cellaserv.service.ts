@@ -35,7 +35,6 @@ export class CellaservService implements OnInit {
   constructor(private cs: CellaservApiService) {}
 
   ngOnInit() {
-    console.log("Init");
     // First, check that we can query cellaserv, then do the setup
     this.cs.request('cellaserv', 'version')
         .subscribe(_ => this.cellaservSetup(),
@@ -90,7 +89,6 @@ export class CellaservService implements OnInit {
 
   liveUpdate<T>(what: string) {
     const attr = what + 's';
-    console.log(this[attr]);
     this.cs.subscribe<T>(`log.cellaserv.new-${what}`).subscribe(newElt => {
       if (!this[attr].includes(newElt)) {
         this[attr].push(newElt);
