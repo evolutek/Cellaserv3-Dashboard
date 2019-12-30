@@ -20,11 +20,11 @@ export class OverviewComponent implements OnInit {
   serviceHelp(service: Service) {
     this.cs.request<any>(service.name, 'help')
         .pipe(catchError(error => {
-          this.snackBar.open(error.error, 'Dismiss', {duration : 2000});
+          this.snackBar.open(error.error, 'Close', {duration : 2000});
           return throwError(error);
         }))
         .subscribe(rep => {
-          this.snackBar.open("TODO(halfr). View dev console.");
+          this.snackBar.open("TODO(halfr). View dev console.", 'Close');
           console.log(rep);
         });
   }
