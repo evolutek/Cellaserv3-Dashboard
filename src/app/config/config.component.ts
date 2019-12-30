@@ -6,6 +6,16 @@ class ConfigSectionEntry {
   name: string;
   value: string;
   currentValue: string;
+
+  constructor(name: string, value: string) {
+    this.name = name;
+    this.updateValue(value);
+  }
+
+  updateValue(newValue: string) {
+    this.value = newValue;
+    this.currentValue = newValue;
+  }
 }
 
 class ConfigSection {
@@ -44,11 +54,7 @@ export class ConfigComponent implements OnInit {
     for (let key in config) {
       var entries = [];
       for (let option in config[key]) {
-        let entry = {
-          name : option,
-          value : config[key][option],
-          currentValue : config[key][option], // TODO(halfr): use constructor
-        };
+        let entry = new ConfigSectionEntry(option, config[key][option]);
         // Save entry for dynamic updates
         this.config_update_map[`config.${key}.${option}`] = entry;
         entries.push(entry);
