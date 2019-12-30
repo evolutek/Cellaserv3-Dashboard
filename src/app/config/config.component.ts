@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {CellaservService} from '../cellaserv.service';
 
@@ -22,12 +22,19 @@ class ConfigUpdate {
   templateUrl : './config.component.html',
   styleUrls : [ './config.component.scss' ]
 })
-export class ConfigComponent {
+export class ConfigComponent implements OnInit {
   config_sections: ConfigSection[] = [];
+  config_update_map: {[pubName: string]: ConfigSectionEntry} = {};
 
-  constructor(public cs: CellaservService) {
+  constructor(public cs: CellaservService) {}
+
+  ngOnInit() {
     this.cs.request("config", "list")
         .subscribe(rep => this.resetConfig(rep), error => console.log(error));
+    // Setup listener
+    this.cs.subscribePattern<ConfigUpdate>('config.*')
+        .subscribe(pub => this.config_update_map[pub.name].value =
+                       pub.data.value);
   }
 
   resetConfig(config: any) {
@@ -42,10 +49,8 @@ export class ConfigComponent {
           value : config[key][option],
           currentValue : config[key][option], // TODO(halfr): use constructor
         };
-        // Setup listener
-        this.cs.subscribe(`config.${key}.${option}`)
-            .subscribe<ConfigUpdate>(configUpdate => entry.value =
-                                         configUpdate.value);
+        // Save entry for dynamic updates
+        this.config_update_map[`config.${key}.${option}`] = entry;
         entries.push(entry);
       }
       this.config_sections.push({name : key, entries : entries});
