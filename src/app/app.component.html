@@ -1,10 +1,7 @@
 <mat-toolbar color="primary" class="app-toolbar">
   <mat-toolbar-row>
     <a mat-button routerLink="/overview">OVERVIEW</a>
-    <a mat-button routerLink="/spy">SPY</a>
     <a mat-button routerLink="/logs">LOGS</a>
-    <a mat-button routerLink="/events">EVENTS</a>
-    <a mat-button routerLink="/map">MAP</a>
     <a *ngFor="let srvc of SERVICES"
       mat-button routerLink="/{{srvc}}"
       [disabled]="!cs.isServicePresent(srvc)"
