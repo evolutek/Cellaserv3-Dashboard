@@ -20,7 +20,7 @@ cd cellaserv3-dashboard
 * Install the dependencies using npm: `npm install`. You will most likely need
   to add the `node_modules/.bin/` directory to your `PATH`.
 * If the cellaserv3 broker is not listening on `localhost:4200`, change the
-  path in `src/app/cellaserv.service.ts`.
+  path in `src/app/cellaserv_api.ts`.
 * Start the development server: `ng serve --port 4242`. We specify the port
   because the default one is the same as cellaserv.
 
