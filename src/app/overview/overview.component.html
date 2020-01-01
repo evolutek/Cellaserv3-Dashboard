@@ -31,6 +31,7 @@
 	  <mat-icon mat-list-icon>chevron_right</mat-icon>
 	  <h3 mat-line>{{service.name}}[{{service.identification}}]</h3>
 	  <p mat-line>Client: {{service.client | clientName}}</p>
+	  <p *ngIf="service.status != null" mat-line>Status: {{service.status}}</p>
 	  <button mat-icon-button>
 	    <mat-icon (click)="serviceHelp(service)">menu_book</mat-icon>
 	  </button>

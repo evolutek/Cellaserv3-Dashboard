@@ -1,21 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
-import {CellaservService} from '../cellaserv.service';
-import {CellaservApiService, Service} from '../cellaserv_api';
+import {CellaservService, Service} from '../cellaserv.service';
+import {CellaservApiService} from '../cellaserv_api';
 
 @Component({
   selector : 'app-overview',
   templateUrl : './overview.component.html',
   styleUrls : [ './overview.component.scss' ],
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent {
   constructor(public broker: CellaservService, public cs: CellaservApiService,
               public snackBar: MatSnackBar) {}
-
-  ngOnInit() { this.broker.cellaservSetup(); }
 
   serviceHelp(service: Service) {
     this.cs.request<any>(service.name, 'help')
